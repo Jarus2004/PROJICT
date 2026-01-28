@@ -51,6 +51,43 @@ PROJECT-PHP/
 └── README.md                  # เอกสารอธิบายโปรเจกต์
 ```
 
+## โครงสร้างฐานข้อมูล (Database Structure)
+
+โปรเจกต์นี้ใช้ฐานข้อมูล MySQL โดยมีตารางหลักดังนี้
+
+### users
+- id
+- username
+- password
+- email
+- creattime
+- role (admin / user)
+
+ใช้สำหรับจัดการข้อมูลผู้ใช้งานและสิทธิ์การเข้าถึง
+
+### products
+- id
+- name
+- price
+- image
+
+ใช้สำหรับจัดการข้อมูลสินค้า
+
+### cart
+- cart_id
+- user_id
+- product_id
+
+ใช้สำหรับจัดการตะกร้าสินค้า
+
+### cart_items
+- cart_item_id
+- cart_id
+- product_id
+- price
+- quantity
+
+แสดงสินค้าของแจ่ละUSER
 
 ## Installation
 1. Clone หรือ Download โปรเจกต์
