@@ -1,6 +1,16 @@
-# PROJICT
+# PROJECT
+
 เว็บไซต์ขายKEYS GAMES พัฒนาโดยใช้ PHP และ MySQL  
 มีระบบสมาชิก ตะกร้าสินค้า และระบบแอดมิน
+
+## Contents
+- [Features](#features)
+- [Technologies](#technologies)
+- [Project Structure](#project-structure)
+- [Database Structure](#database-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Author](#author)
 
 ## Features
 - สมัครสมาชิก / เข้าสู่ระบบ
@@ -51,7 +61,7 @@ PROJECT-PHP/
 └── README.md                  # เอกสารอธิบายโปรเจกต์
 ```
 
-## โครงสร้างฐานข้อมูล (Database Structure)
+## Database Structure
 
 โปรเจกต์นี้ใช้ฐานข้อมูล MySQL โดยมีตารางหลักดังนี้
 
