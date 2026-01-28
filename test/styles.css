@@ -1,0 +1,146 @@
+/* styles.css */
+.head {
+    background-color: #ee0213;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 80px;
+}
+#A p {
+    position: relative;
+    bottom:80px ;
+    left: 80px;
+}
+#C p {
+    position: relative;
+    top: -15px;
+    right: 80px;
+}
+
+.link {
+    background-color: grey;
+    padding: 15px;
+    text-align: center;
+    color: #121212;
+    font-size: 20px;
+}
+
+body {
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    color:white;
+}
+.homepage {
+    background-color: #121212;
+    width: 50%;
+    margin: auto;
+}
+
+.game{
+    margin: auto;
+    padding: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+#G{
+    margin: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: black;
+    border-radius: 50px;
+    width: 200px;
+    height: 450px;
+}
+#G img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: auto;
+    border-radius: 20px;
+    padding: 0px 0px 20px 0px;
+}
+#G p{
+    text-align: center;
+    font-size: 18px;
+    margin: 5px;
+}
+
+.table-memberships{
+    background-color: black;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.imgMEM {
+  max-width: 100%;
+  height: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+.giftcard {
+  max-width: 100%;
+  height: auto;
+    display: block;
+    margin: auto;
+}
+h1 {
+    font-size: 50px;
+    text-align: left;
+}
+p{
+    text-align: left;
+    font-size: 20px;
+}
+.border {
+    width: 90%;
+    height: 2px;
+    background-color: gray;
+    margin: 10px auto;
+    border-radius: 5px;
+}
+a:hover {
+    opacity: 0.5;
+    transition: 0.3s;
+}
+a {
+  color: goldenrod;
+  font-weight: bold;
+   text-decoration: none;
+}
+
+.table-giftcard p{
+    position: relative;
+    bottom: 135px;
+    text-align: center;
+    pointer-events: none;
+}
+footer {
+    width: 100%;
+    background-color: rgb(51, 51, 51);
+    padding: 5px;
+}
+footer p {
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    margin: 0;
+    padding: 10px;
+}
+.buy {
+    width: 100%;
+    background-color: #ee0213;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin: auto;
+    cursor: pointer;
+    border-radius: 5px;
+}
