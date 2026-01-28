@@ -16,6 +16,7 @@
 - JavaScript
 
 ## Project Structure
+```
 PROJECT-PHP/
 │
 ├── admin/                     # ส่วนผู้ดูแลระบบ
@@ -48,6 +49,7 @@ PROJECT-PHP/
 ├── upload/                    # เก็บไฟล์ที่อัปโหลด (รูปสินค้า ฯลฯ)
 │
 └── README.md                  # เอกสารอธิบายโปรเจกต์
+```
 
 
 ## Installation
@@ -62,3 +64,4 @@ http://localhost/project-php/auth/login.php
 
 ## Author
 Jarus (Bonus)
+Junior Web Developer
