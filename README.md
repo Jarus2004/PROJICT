@@ -1,4 +1,4 @@
-# PROJECT
+# PROJECT KEYS STORE
 
 เว็บไซต์ขายKEYS GAMES พัฒนาโดยใช้ PHP และ MySQL  
 มีระบบสมาชิก ตะกร้าสินค้า และระบบแอดมิน
@@ -11,6 +11,24 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Author](#author)
+
+## 📸 Screenshots
+
+<p align="center">
+  <img src="screenshot/login-img.png" width="600">
+</p>
+
+<p align="center">
+  <img src="screenshot/homepage-img.png" width="600">
+</p>
+
+<p align="center">
+  <img src="screenshot/cart-img.png" width="600">
+</p>
+
+<p align="center">
+  <img src="screenshot/addmin-img.png" width="600">
+</p>
 
 ## Features
 - สมัครสมาชิก / เข้าสู่ระบบ
@@ -66,17 +84,17 @@ PROJECT-PHP/
 โปรเจกต์นี้ใช้ฐานข้อมูล MySQL โดยมีตารางหลักดังนี้
 
 ### users
-- id
+- id (PRIMARY KEY)
 - username
-- password
+- password (hash)
 - email
-- creattime
+- creattime (วันที่สร้าง)
 - role (admin / user)
 
 ใช้สำหรับจัดการข้อมูลผู้ใช้งานและสิทธิ์การเข้าถึง
 
 ### products
-- id
+- id (PRIMARY KEY)
 - name
 - price
 - image
