@@ -120,23 +120,47 @@ if (!isset($_SESSION['user_login'])) {
     <!-- เกมทั้งหมด -->
     <div class="container-xl mt-5 mb-5 mx-auto p-5">
         <h1 class="bigfront mb-3">สินค้าที่นิยม</h1>
+
+        <!-- ช่องค้นหา -->
+        <nav class="navbar navbar-light mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand"></a>
+                <form class="d-flex" action="page.php" method="get">
+                    <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search" value="<?= isset($_GET['search']) ? $_GET['search'] : '' ?>">
+                    <button class="btn btn-outline-success" type="submit">ค้นหา</button>
+                </form>
+            </div>
+        </nav>
+
         <div class="row row-cols-4">
             <?php
+            $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
             $limit = 9; // แสดง 10 รายการต่อหน้า
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $page = max($page, 1);
             $offset = ($page - 1) * $limit;
 
+            $where = '';
+            $params = [];
+
+            if ($search !== '') {
+                $where = "WHERE name_games LIKE :search";
+                $params[':search'] = "%$search%";
+            }
+
             // ดึงข้อมูลตามหน้า
-            $stmt = $conn->prepare("SELECT * FROM games_table LIMIT :limit OFFSET :offset");
+            $sql = "SELECT * FROM games_table $where LIMIT :limit OFFSET :offset";
+            $stmt = $conn->prepare($sql);
+            foreach ($params as $key => $value) {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
             $stmt->execute();
             $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-
+                if (!empty($games)){
             foreach ($games as $game) {
             ?>
                 <div class="col mx-5 mb-4 bg-black-rgb rounded-edit" width="100px">
@@ -154,9 +178,19 @@ if (!isset($_SESSION['user_login'])) {
                         </button>
                     </form>
                 </div>
-            <?php }
+                
+            <?php } ?>
+            <?php }else{
+                echo"<p class=\"text-center w-100 fs-2 m-5\">ไม่พบข้อมูลที่ค้นหา</p>";
+            } ?>
 
-            $countStmt = $conn->query("SELECT COUNT(*) FROM games_table");
+            <?php
+            $countSql = "SELECT COUNT(*) FROM games_table $where";
+            $countStmt = $conn->prepare($countSql);
+            if ($search !== '') {
+                $countStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+            }
+            $countStmt->execute();
             $totalGames = $countStmt->fetchColumn();
             $totalPages = ceil($totalGames / $limit);
 
@@ -164,29 +198,17 @@ if (!isset($_SESSION['user_login'])) {
             ?>
         </div>
         <nav class="mt-4">
-            <ul class="pagination justify-content-center">
-
-                <!-- Previous -->
-                <li class="page-item <?= ($page <= 1) ? 'disabled' : '' ?>">
-                    <a class="bg-dark text-warning border-0 page-link" href="?page=<?= $page - 1 ?>">หน้าก่อน</a>
-                </li>
-
-                <!-- เลขหน้า -->
-                <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                    <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
-                        <a class="bg-dark border-start border-end border-warning page-link" href="?page=<?= $i ?>">
-                            <?= $i ?>
-                        </a>
-                    </li>
-                <?php } ?>
-
-                <!-- Next -->
-                <li class="page-item <?= ($page >= $totalPages) ? 'disabled' : '' ?>">
-                    <a class="bg-dark text-warning border-0 page-link" href="?page=<?= $page + 1 ?>">หน้าถัดไป</a>
-                </li>
-
-            </ul>
-        </nav>
+    <ul class="pagination justify-content-center">
+        <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+            <li class="page-item <?= ($page == $i) ? 'active' : '' ?>">
+                <a class="page-link"
+                   href="?page=<?= $i ?>&search=<?= urlencode($search) ?>">
+                    <?= $i ?>
+                </a>
+            </li>
+        <?php } ?>
+    </ul>
+</nav>
 
     </div>
 
