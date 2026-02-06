@@ -39,7 +39,7 @@ if (isset($_GET['delete'])) {
 
     <head>
         <nav>
-            <a href="../auth/logout.php"><button class="btn btn-danger">Logout</button></a>
+            <a href="../auth/logout.php"><button class="btn btn-danger p-2">Logout</button></a>
         </nav>
     </head>
     <main>
@@ -83,8 +83,9 @@ if (isset($_GET['delete'])) {
                 <div class="col-md-6">
                     <h1>ตารางสินค้า</h1>
                 </div>
-                <div class="col-md-6 d-flex justify-content-end">
+                <div class="col-md-6 d-flex justify-content-end gap-2 p-2">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gameModal">เพิ่มสินค้า</button>
+                    <a href="key_games.php" class="btn btn-warning">KEYS</a>
                 </div>
             </div>
             <hr>
@@ -109,7 +110,7 @@ if (isset($_GET['delete'])) {
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">id</th>
+                        <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Image</th>

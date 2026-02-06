@@ -36,6 +36,7 @@
 - ระบบตะกร้าสินค้า
 - ระบบแอดมิน
 - CRUD ข้อมูล
+- เพิ่มKEYSเกมส์
 
 ## Technologies
 - PHP
@@ -48,11 +49,14 @@
 ```
 PROJECT-PHP/
 │
-├── admin/                     # ส่วนผู้ดูแลระบบ
-│   ├── admin_page.php         # หน้าแดชบอร์ดแอดมิน
-│   ├── edit_game.php          # แก้ไขข้อมูลสินค้า/เกม
-│   └── insert_product.php     # เพิ่มสินค้าใหม่
-│
+├── aadmin/                     # ส่วนผู้ดูแลระบบ
+│   ├── admin_page.php          # หน้าแดชบอร์ดแอดมิน
+│   ├── edit_game.php           # แก้ไขข้อมูลสินค้า/เกม
+│   ├── insert_product.php      # เพิ่มสินค้าใหม่
+│   ├── key_games.php           # จัดการคีย์เกม (แสดงรายการคีย์)
+│   ├── insert_keys.php         # เพิ่มคีย์เกมใหม่
+│   └── edit_keys.php           # แก้ไขคีย์เกม
+|   
 ├── auth/                      # ระบบยืนยันตัวตน
 │   ├── login.php              # หน้าเข้าสู่ระบบ
 │   ├── logout.php             # ออกจากระบบ
@@ -115,6 +119,14 @@ PROJECT-PHP/
 - product_id
 - price
 - quantity
+
+### key_games
+- key_id
+- product_id
+- order_id
+- game_key
+- status
+- created_at
 
 แสดงสินค้าของแจ่ละUSER
 
