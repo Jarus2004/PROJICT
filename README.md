@@ -120,6 +120,8 @@ PROJECT-PHP/
 - price
 - quantity
 
+แสดงสินค้าของแต่ละUSER
+
 ### key_games
 - key_id
 - product_id
@@ -128,7 +130,7 @@ PROJECT-PHP/
 - status
 - created_at
 
-แสดงสินค้าของแจ่ละUSER
+เก็บKEYSเกมส์
 
 ## Installation
 1. Clone หรือ Download โปรเจกต์
