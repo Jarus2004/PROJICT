@@ -1,3 +1,4 @@
+# USER
 CREATE TABLE `bob` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
@@ -8,6 +9,7 @@ CREATE TABLE `bob` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
+# CART
 CREATE TABLE `cart` (
   `cart_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
@@ -15,6 +17,7 @@ CREATE TABLE `cart` (
   PRIMARY KEY (`cart_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
+# CART Item
 CREATE TABLE `cart_item` (
   `cart_item_id` int(11) NOT NULL AUTO_INCREMENT,
   `cart_id` int(11) NOT NULL,
@@ -24,6 +27,7 @@ CREATE TABLE `cart_item` (
   PRIMARY KEY (`cart_item_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
+# Game Table
 CREATE TABLE `games_table` (
   `id_games` int(11) NOT NULL AUTO_INCREMENT,
   `name_games` varchar(255) NOT NULL,
@@ -32,6 +36,7 @@ CREATE TABLE `games_table` (
   PRIMARY KEY (`id_games`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
+# Game KEYS
 CREATE TABLE `game_keys` (
   `key_id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
@@ -46,6 +51,7 @@ CREATE TABLE `game_keys` (
   CONSTRAINT `fk_game_keys_game` FOREIGN KEY (`product_id`) REFERENCES `games_table` (`id_games`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
+# ORDERS
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
@@ -57,6 +63,7 @@ CREATE TABLE `orders` (
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `bob` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
+# ORDER ITEM
 CREATE TABLE `order_items` (
   `order_item_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL,
@@ -70,6 +77,7 @@ CREATE TABLE `order_items` (
   CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `games_table` (`id_games`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
+# INBOX KEYS
 CREATE TABLE `inbox_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL,
