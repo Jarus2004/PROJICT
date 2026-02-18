@@ -1,33 +1,38 @@
 <?php
-    session_start();
-    require_once '../config/data.php';
+session_start();
+require_once '../config/data.php';
 
-    if(isset($_POST['submitkeys'])){
-        $product_id = $_POST['pid'];
-        $key = $_POST['key'];
+if (isset($_POST['submitkeys'])) {
+    $product_id = $_POST['pid'];
+    // $key = $_POST['key'];
+    $keys = explode("\n", $_POST['keys']);
 
-        $stmt = $conn->prepare("SELECT id_games FROM games_table WHERE id_games = :product_id");
-        $stmt->bindParam(":product_id", $product_id);
-        $stmt->execute();
-        $game = $stmt->fetch();
+    $stmt = $conn->prepare("SELECT id_games FROM games_table WHERE id_games = :product_id");
+    $stmt->bindParam(":product_id", $product_id);
+    $stmt->execute();
+    $game = $stmt->fetch();
 
-        if(empty($game)){
-            $_SESSION['error'] = "ไม่มี ID ของเกมนี้ในระบบ";
-            header("refresh:1; url=key_games.php");
-            exit();
-        }else{
-                    $sql = $conn->prepare("INSERT INTO game_keys(product_id,game_key) VALUES (:product_id,:game_key)");
-                    $sql->bindParam(":product_id", $product_id);
-                    $sql->bindParam(":game_key", $key);
-                    $sql->execute();
+    if (empty($game)) {
+        $_SESSION['error'] = "ไม่มี ID ของเกมนี้ในระบบ";
+        header("Location:admin_page.php?page=key");
+        exit();
+    } else {
+        // $stmt = $conn->prepare("INSERT INTO game_keys (product_id, game_key) 
+        //                     VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT IGNORE INTO game_keys (product_id, game_key)
+VALUES (?, ?)
+");
 
-                    if($sql){
-                        $_SESSION['success'] = "เพิ่มสินค้าเรียบร้อยแล้ว";
-                        header("Location:key_games.php");
-                    }else{
-                        $_SESSION['error'] = "มีบางอย่างผิดพลาด";
-                        header("Location:key_games.php");
-                    }
+
+        foreach ($keys as $key) {
+            $key = trim($key);
+            if (!empty($key)) {
+                $stmt->execute([$product_id, $key]);
             }
+        }
+
+        $_SESSION['success'] = "เพิ่มสินค้าเรียบร้อยแล้ว";
+        header("Location:admin_page.php?page=key");
+        exit();
     }
-?>
+}

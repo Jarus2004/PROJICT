@@ -24,10 +24,10 @@
 
                     if($sql){
                         $_SESSION['success'] = "เพิ่มสินค้าเรียบร้อยแล้ว";
-                        header("Location: admin_page.php");
+                        header("Location: admin_page.php?page=products");
                     }else{
                         $_SESSION['error'] = "มีบางอย่างผิดพลาด";
-                        header("Location: admin_page.php");
+                        header("Location: admin_page.php?page=products");
                     }
                 }
             }

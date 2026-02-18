@@ -71,8 +71,13 @@ if (isset($_GET['delete'])) {
         <h1>Shopping Cart</h1>
         <a href="../pages/page.php" class="text-dark text-decoration-none">กลับไปหน้าหลัก</a>
     </div>
-
+        
     <div class="container mt-5">
+        <?php if(isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger text-center">
+                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+            </div>
+        <?php endif; ?>
         <table class="table table-bordered text-center" style="background-color: rgba(255,255,255,0.4);">
             <thead>
                 <tr>
@@ -88,18 +93,23 @@ if (isset($_GET['delete'])) {
 
                 <?php
                 $stmt = $conn->prepare("
-    SELECT 
-        c.product_id,
-        c.quantity,
-        c.price,
-        g.name_games
-    FROM cart_item c
-    JOIN games_table g ON c.product_id = g.id_games
-    WHERE c.cart_id = (
-        SELECT cart_id FROM cart WHERE user_id = ?
-    )
+SELECT 
+    c.product_id,
+    c.quantity,
+    c.price,
+    g.name_games,
+    COUNT(gk.key_id) AS key_available
+FROM cart_item c
+JOIN cart ct ON c.cart_id = ct.cart_id
+JOIN games_table g ON c.product_id = g.id_games
+LEFT JOIN game_keys gk 
+    ON g.id_games = gk.product_id 
+    AND gk.status = 'available'
+WHERE ct.user_id = ?
+GROUP BY c.product_id, c.quantity, c.price, g.name_games
 ");
                 $stmt->execute([$user_id]);
+
                 $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 if (!$cart_items) {
@@ -113,13 +123,14 @@ if (isset($_GET['delete'])) {
                 } else {
                     foreach ($cart_items as $item) {
                         $total_price = $item['price'] * $item['quantity'];
+                        $max = max(1, (int)$item['key_available']);
                 ?>
                         <tr>
                             <!-- ฟอร์มแก้ไขจำนวนสินค้า -->
                             <td>
                                 <form method="post" action="cart_page.php" class="d-inline-block">
                                     <input type="hidden" name="product_id" value="<?= $item['product_id']; ?>">
-                                    <input type="number" name="quantity" value="<?= $item['quantity']; ?>" min="1" class="form-control mb-1">
+                                    <input type="number" name="quantity" value="<?= $item['quantity']; ?>" min="1" max="<?= $max ?>" class="form-control mb-1">
                                     <button type="submit" name="update_qty" class="btn btn-sm btn-warning">
                                         แก้จำนวน
                                     </button>
@@ -141,13 +152,14 @@ if (isset($_GET['delete'])) {
                                 </a>
                             </td>
                         </tr>
-                <?php
-                    }
-                }
-                ?>
+                    <?php } ?>
 
+                <?php } ?>
             </tbody>
-        </table> 
+        </table>
+        <?php if (!empty($cart_items)) { ?>
+            <a href="orders.php?user_order=<?= $user_id ?>" class="btn btn-success text-center d-block mt-3">ชำระเงิน</a>
+        <?php } ?>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

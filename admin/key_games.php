@@ -1,20 +1,5 @@
 <?php
 require_once '../config/data.php';
-session_start();
-if (!isset($_SESSION['admin_login'])) {
-    header("Location: ../auth/login.php");
-}
-if (isset($_GET['delete'])) {
-    $delete_id = $_GET['delete'];
-    $deletestmt = $conn->query("DELETE FROM game_keys WHERE key_id = $delete_id");
-    $deletestmt->execute();
-
-    if ($deletestmt) {
-        echo "<script>alert('ลบสินค้าเรียบร้อยแล้ว')</script>";
-        $_SESSION['success'] = "ลบสินค้าเรียบร้อยแล้ว";
-        header("refresh:1.5; url=key_games.php");
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,12 +13,6 @@ if (isset($_GET['delete'])) {
 </head>
 
 <body>
-
-    <head>
-        <nav>
-            <a href="admin_page.php"><button class="btn btn-warning p-2">BACK</button></a>
-        </nav>
-    </head>
 
     <!-- เพิ่มKEYS -->
     <div class="modal fade" id="keyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -50,9 +29,14 @@ if (isset($_GET['delete'])) {
                             <input type="text" class="form-control" name="pid" required>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="price" class="col-form-label">Key:</label>
+                        <!-- <div class="mb-3">
+                            <label for="key" class="col-form-label">Key:</label>
                             <input type="text" class="form-control" name="key" required>
+                        </div> -->
+
+                        <div class="mb-3">
+                            <textarea name="keys" class="form-control" rows="10"
+                                placeholder="วางคีย์เกม 1 บรรทัด ต่อ 1 คีย์" required></textarea>
                         </div>
 
                         <div class="modal-footer">
@@ -91,7 +75,7 @@ if (isset($_GET['delete'])) {
 
                         <div class="mb-3">
                             <label>Game Key</label>
-                            <input type="text" class="form-control" name="game_key" id="modal_game_key" value="<?=$key['game_key'] ?>">
+                            <input type="text" class="form-control" name="game_key" id="modal_game_key" value="<?= $key['game_key'] ?>">
                         </div>
 
                     </div>
@@ -141,53 +125,55 @@ if (isset($_GET['delete'])) {
         <?php } ?>
 
         <!-- แสดงรายการสินค้า -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">ProductID</th>
-                    <th scope="col">Key</th>
-                    <th scope="col">status</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $stmt = $conn->query("SELECT * FROM game_keys");
-                $stmt->execute();
-                $keys = $stmt->fetchAll();
+        <div style="max-height: 1000px; overflow-y: auto;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">ProductID</th>
+                        <th scope="col">Key</th>
+                        <th scope="col">status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $stmt = $conn->query("SELECT * FROM game_keys");
+                    $stmt->execute();
+                    $keys = $stmt->fetchAll();
 
-                if (!$keys) {
-                    echo "<p><td colspan='4' class='text-center'>ไม่มีสินค้าในระบบ</td></p>";
-                } else {
-                    foreach ($keys as $key) {
-                ?>
-                        <tr>
-                            <th scope="row"><?php echo $key['key_id']; ?></th>
-                            <td><?= $key['product_id'] ?></td>
-                            <td><?= $key['game_key'] ?></td>
-                            <td><?= $key['status'] ?></td>
-                            <td>
-                                <button type="button"
-                                    class="btn btn-warning"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editKeyModal"
+                    if (!$keys) {
+                        echo "<p><td colspan='4' class='text-center'>ไม่มีสินค้าในระบบ</td></p>";
+                    } else {
+                        foreach ($keys as $key) {
+                    ?>
+                            <tr>
+                                <th scope="row"><?php echo $key['key_id']; ?></th>
+                                <td><?= $key['product_id'] ?></td>
+                                <td><?= $key['game_key'] ?></td>
+                                <td><?= $key['status'] ?></td>
+                                <td>
+                                    <button type="button"
+                                        class="btn btn-warning"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#editKeyModal"
 
-                                    data-id="<?= $key['key_id'] ?>"
-                                    data-pid="<?= $key['product_id'] ?>"
-                                    data-key="<?= htmlspecialchars($key['game_key']) ?>">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
+                                        data-id="<?= $key['key_id'] ?>"
+                                        data-pid="<?= $key['product_id'] ?>"
+                                        data-key="<?= htmlspecialchars($key['game_key']) ?>">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
 
 
-                                <a href="?delete=<?= $key["key_id"] ?>" class="btn btn-danger" onclick="return confirm('คุณต้องการลบสินค้าหรือไม่ ??')"><i class="bi bi-trash"></i></a>
-                            </td>
-                        </tr>
-                <?php   }
-                }
-                ?>
-            </tbody>
-        </table>
+                                    <a href="key_delete.php?delete_key=<?= $key["key_id"] ?>" class="btn btn-danger" onclick="return confirm('คุณต้องการลบสินค้าหรือไม่ ??')"><i class="bi bi-trash"></i></a>
+                                </td>
+                            </tr>
+                    <?php   }
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
 
     </div>
     <script>

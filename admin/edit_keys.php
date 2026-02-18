@@ -13,7 +13,7 @@
 
         if ($stmt->rowCount() == 0) {
             $_SESSION['error'] = "ไม่มี Product ID นี้ในระบบ";
-            header("Location: key_games.php");
+            header("Location: admin_page.php?page=key");
             exit();
         }
 
@@ -25,10 +25,10 @@
 
         if($sql){
                         $_SESSION['success'] = "แก้ไขสินค้าเรียบร้อยแล้ว";
-                        header("Location: key_games.php");
+                        header("Location: admin_page.php?page=key");
                     }else{
                         $_SESSION['error'] = "มีบางอย่างผิดพลาด";
-                        header("Location: key_games.php");
+                        header("Location: admin_page.php?page=key");
                     }
     }
 ?>

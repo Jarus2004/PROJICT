@@ -38,10 +38,10 @@
 
         if($sql){
                         $_SESSION['success'] = "แก้ไขสินค้าเรียบร้อยแล้ว";
-                        header("Location: admin_page.php");
+                        header("Location: admin_page.php?page=products");
                     }else{
                         $_SESSION['error'] = "มีบางอย่างผิดพลาด";
-                        header("Location: admin_page.php");
+                        header("Location: admin_page.php?page=products");
                     }
     }
 ?>
@@ -67,10 +67,6 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
         }
     ?>    
-    <a href="../auth/logout.php">Logout</a>
-
-
-
     <div class="container mt-5">
         <h1>แก้ไขสินค้า</h1>
         <hr>
@@ -100,7 +96,7 @@
                 </div>
 
                 <div class="modal-footer">
-                <a class="btn btn-secondary" href="admin_page.php">กลับ</a>
+                <a class="btn btn-secondary" href="admin_page.php?page=products">กลับ</a>
                 <button type="submit" name="update" class="btn btn-success">บันทึก</button>
             </div>
 

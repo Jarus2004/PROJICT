@@ -102,13 +102,68 @@ if (!isset($_SESSION['user_login'])) {
                 ยินดีต้อนรับ, <?php echo $row['username']; ?>
             </div>
             <div class="d-flex gap-4">
+                <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modal-inbox">
+                    กล่องจดหมาย<i class="bi bi-backpack"></i>
+                </button>
                 <a href="../cart/cart_page.php" class="text-decoration-none fs-4 fw-bold text-warning"><i class="bi bi-bag-fill"></i> ตะกร้าสินค้า </a>
                 <a href="../auth/logout.php" class="text-decoration-none fs-4 fw-bold text-warning">ออกจากระบบ</a>
             </div>
         </div>
     </div>
 
+    
+    <!-- //modal -->
+    <div class="modal fade" id="modal-inbox" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-black-rgb text-warning border-warning font-thai">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">กล่องจดหมาย</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <?php
+        $stmt = $conn->prepare("
+    SELECT ik.product_id, ik.game_key, ik.created_at,gt.name_games
+    FROM inbox_keys ik
+    JOIN games_table gt ON ik.product_id = gt.id_games
+    WHERE ik.user_id = ?
+    ORDER BY created_at DESC
+");
+$stmt->execute([$user_id]);
+$inbox = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        if ($inbox) {
+            foreach ($inbox as $item) { ?>
+            <p class="border-bottom pb-2 mb-2 fs-5">
+            🎮 <strong>สินค้า:</strong> <?= htmlspecialchars($item['name_games']) ?><br>
+            🔑 <strong>Key:</strong> <?= htmlspecialchars($item['game_key']) ?><br>
+            🕒 <small><?= $item['created_at'] ?></small>
+            
+        </p>
+        <?php }?>
+        <?php }else {
+            echo "<p class=\"text-center fs-4\">ไม่มีข้อความ</p>";
+        }
+        ?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">ปิด</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <h1 class="text-center p-3 font-2P" style="font-size: 70px;">WELCOME TO JARUS STORE</h1>
+    <?php
+    if (isset($_SESSION['success']) && $_SESSION['success'] == 'สั่งซื้อสำเร็จ!') {
+    ?>
+        <div class="alert alert-success text-center">
+            <?php
+            echo $_SESSION['success'];
+            unset($_SESSION['success']);
+            ?>
+        </div>
+    <?php } ?>
 
     <!-- สไลด์รูปภาพ -->
     <div class="container m-auto">
@@ -150,7 +205,23 @@ if (!isset($_SESSION['user_login'])) {
             }
 
             // ดึงข้อมูลตามหน้า
-            $sql = "SELECT * FROM games_table $where LIMIT :limit OFFSET :offset";
+            // $sql = "SELECT * FROM games_table $where LIMIT :limit OFFSET :offset";
+            $sql = "SELECT 
+    g.id_games,
+    g.name_games,
+    g.price_games,
+    g.img_games,
+    COUNT(gk.key_id) AS key_available
+FROM games_table g
+LEFT JOIN game_keys gk 
+    ON g.id_games = gk.product_id 
+    AND gk.status = 'available'
+$where
+GROUP BY g.id_games
+LIMIT :limit OFFSET :offset
+";
+
+
             $stmt = $conn->prepare($sql);
             foreach ($params as $key => $value) {
                 $stmt->bindValue($key, $value, PDO::PARAM_STR);
@@ -160,28 +231,37 @@ if (!isset($_SESSION['user_login'])) {
             $stmt->execute();
             $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                if (!empty($games)){
-            foreach ($games as $game) {
+            if (!empty($games)) {
+                foreach ($games as $game) {
+                    $max = max(1, (int)$game['key_available']);
             ?>
-                <div class="col mx-5 mb-4 bg-black-rgb rounded-edit" width="100px">
-                    <img width="100%" height="300px" src="../upload/<?= $game['img_games'] ?>" alt="<?= $game['name_games'] ?>" class="rounded-edit mt-2" />
-                    <h4 class="text-center mt-3 text-warning"><?= $game['name_games'] ?></h4>
-                    <hr class="bg-white">
-                    <h5 class="text-center mb-3 text-warning">ราคา :<?= $game['price_games'] ?>บาท</h5>
+                    <div class="col mx-5 mb-4 bg-black-rgb rounded-edit" width="100px">
+                        <img width="100%" height="300px" src="../upload/<?= $game['img_games'] ?>" alt="<?= $game['name_games'] ?>" class="rounded-edit mt-2" />
+                        <h4 class="text-center mt-3 text-warning"><?= $game['name_games'] ?></h4>
+                        <hr class="bg-white">
+                        <h5 class="text-center mb-3 text-warning">ราคา :<?= $game['price_games'] ?>บาท</h5>
+                        <h5 class="text-center mb-3 text-warning">จำนวนคีย์ที่มี : <?= $game['key_available'] ?></h5>
 
-                    <!-- ฟอร์มเพิ่มลงตะกร้า -->
-                    <form action="../cart/add_to_cart.php" method="post" class="text-center mb-2">
-                        <input type="hidden" name="product_id" value="<?= $game['id_games'] ?>">
-                        <input type="hidden" name="price" value="<?= $game['price_games'] ?>">
-                        <button type="submit" class="btn btn-success">
-                            เพิ่มลงในรถเข็น
-                        </button>
-                    </form>
-                </div>
-                
-            <?php } ?>
-            <?php }else{
-                echo"<p class=\"text-center w-100 fs-2 m-5\">ไม่พบข้อมูลที่ค้นหา</p>";
+                        <!-- ฟอร์มเพิ่มลงตะกร้า -->
+                        <form action="../cart/add_to_cart.php" method="post" class="text-center mb-2">
+                            <input type="hidden" name="product_id" value="<?= $game['id_games'] ?>">
+                            <input type="hidden" name="price" value="<?= $game['price_games'] ?>">
+                            <?php if ($game['key_available'] > 0) { ?>
+                                <?php ?>
+                                <button type="submit" class="btn btn-success">
+                                    เพิ่มลงในรถเข็น
+                                </button>
+                            <?php } else { ?>
+                                <button type="button" class="btn btn-secondary" disabled>
+                                    ไม่มีคีย์ให้บริการ
+                                </button>
+                            <?php } ?>
+                        </form>
+                    </div>
+
+                <?php } ?>
+            <?php } else {
+                echo "<p class=\"text-center w-100 fs-2 m-5\">ไม่พบข้อมูลที่ค้นหา</p>";
             } ?>
 
             <?php
@@ -198,17 +278,17 @@ if (!isset($_SESSION['user_login'])) {
             ?>
         </div>
         <nav class="mt-4">
-    <ul class="pagination justify-content-center">
-        <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-            <li class="page-item <?= ($page == $i) ? 'active' : '' ?>">
-                <a class="page-link"
-                   href="?page=<?= $i ?>&search=<?= urlencode($search) ?>">
-                    <?= $i ?>
-                </a>
-            </li>
-        <?php } ?>
-    </ul>
-</nav>
+            <ul class="pagination justify-content-center">
+                <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+                    <li class="page-item <?= ($page == $i) ? 'active' : '' ?>">
+                        <a class="page-link"
+                            href="?page=<?= $i ?>&search=<?= urlencode($search) ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </nav>
 
     </div>
 
