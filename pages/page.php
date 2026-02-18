@@ -26,8 +26,20 @@ if (!isset($_SESSION['user_login'])) {
     <title>Jarus SHOP</title>
     <style>
         .bigfront {
-            font-size: 50px;
+            font-size: 2rem;
             font-weight: bold;
+        }
+
+        @media (min-width: 768px) {
+            .bigfront {
+                font-size: 3rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .bigfront {
+                font-size: 4rem;
+            }
         }
 
         .imggift .col p {
@@ -84,6 +96,38 @@ if (!isset($_SESSION['user_login'])) {
             font-weight: 700;
             font-style: normal;
         }
+
+        .welcome-title {
+            font-size: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-title {
+                font-size: 4rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .welcome-title {
+                font-size: 5rem;
+            }
+        }
+
+        .game-card {
+            margin: 0 0 1rem 0;
+        }
+
+        @media (min-width: 576px) {
+            .game-card {
+                margin: 0 0.5rem 1rem 0.5rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .game-card {
+                margin: 0 1rem 1rem 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -97,16 +141,16 @@ if (!isset($_SESSION['user_login'])) {
     }
     ?>
     <div class="container-fluid back p-3 mb-5 position-sticky top-0">
-        <div class="d-flex justify-content-between">
-            <div class="fs-4 fw-bold">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="fs-4 fw-bold mb-2 mb-md-0">
                 ยินดีต้อนรับ, <?php echo $row['username']; ?>
             </div>
-            <div class="d-flex gap-4">
-                <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#modal-inbox">
+            <div class="d-flex flex-column flex-md-row gap-2 gap-md-4">
+                <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-inbox">
                     กล่องจดหมาย<i class="bi bi-backpack"></i>
                 </button>
-                <a href="../cart/cart_page.php" class="text-decoration-none fs-4 fw-bold text-warning"><i class="bi bi-bag-fill"></i> ตะกร้าสินค้า </a>
-                <a href="../auth/logout.php" class="text-decoration-none fs-4 fw-bold text-warning">ออกจากระบบ</a>
+                <a href="../cart/cart_page.php" class="text-decoration-none fs-6 fs-md-4 fw-bold text-warning"><i class="bi bi-bag-fill"></i> ตะกร้าสินค้า </a>
+                <a href="../auth/logout.php" class="text-decoration-none fs-6 fs-md-4 fw-bold text-warning">ออกจากระบบ</a>
             </div>
         </div>
     </div>
@@ -153,7 +197,7 @@ $inbox = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </div>
 
-    <h1 class="text-center p-3 font-2P" style="font-size: 70px;">WELCOME TO JARUS STORE</h1>
+    <h1 class="text-center p-3 font-2P welcome-title">WELCOME TO JARUS STORE</h1>
     <?php
     if (isset($_SESSION['success']) && $_SESSION['success'] == 'สั่งซื้อสำเร็จ!') {
     ?>
@@ -187,7 +231,7 @@ $inbox = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </nav>
 
-        <div class="row row-cols-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 justify-content-center">
             <?php
             $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
@@ -235,12 +279,12 @@ LIMIT :limit OFFSET :offset
                 foreach ($games as $game) {
                     $max = max(1, (int)$game['key_available']);
             ?>
-                    <div class="col mx-5 mb-4 bg-black-rgb rounded-edit" width="100px">
-                        <img width="100%" height="300px" src="../upload/<?= $game['img_games'] ?>" alt="<?= $game['name_games'] ?>" class="rounded-edit mt-2" />
-                        <h4 class="text-center mt-3 text-warning"><?= $game['name_games'] ?></h4>
+                    <div class="col game-card bg-black-rgb rounded-edit">
+                        <img width="100%" src="../upload/<?= $game['img_games'] ?>" alt="<?= $game['name_games'] ?>" class="rounded-edit mt-2 img-fluid" style="height: 200px; object-fit: cover;" />
+                        <h4 class="text-center mt-3 text-warning fs-5 fs-md-4"><?= $game['name_games'] ?></h4>
                         <hr class="bg-white">
-                        <h5 class="text-center mb-3 text-warning">ราคา :<?= $game['price_games'] ?>บาท</h5>
-                        <h5 class="text-center mb-3 text-warning">จำนวนคีย์ที่มี : <?= $game['key_available'] ?></h5>
+                        <h5 class="text-center mb-3 text-warning fs-6 fs-md-5">ราคา :<?= $game['price_games'] ?>บาท</h5>
+                        <h5 class="text-center mb-3 text-warning fs-6 fs-md-5">จำนวนคีย์ที่มี : <?= $game['key_available'] ?></h5>
 
                         <!-- ฟอร์มเพิ่มลงตะกร้า -->
                         <form action="../cart/add_to_cart.php" method="post" class="text-center mb-2">
@@ -248,11 +292,11 @@ LIMIT :limit OFFSET :offset
                             <input type="hidden" name="price" value="<?= $game['price_games'] ?>">
                             <?php if ($game['key_available'] > 0) { ?>
                                 <?php ?>
-                                <button type="submit" class="btn btn-success">
+                                <button type="submit" class="btn btn-success btn-sm">
                                     เพิ่มลงในรถเข็น
                                 </button>
                             <?php } else { ?>
-                                <button type="button" class="btn btn-secondary" disabled>
+                                <button type="button" class="btn btn-secondary btn-sm" disabled>
                                     ไม่มีคีย์ให้บริการ
                                 </button>
                             <?php } ?>
@@ -261,7 +305,7 @@ LIMIT :limit OFFSET :offset
 
                 <?php } ?>
             <?php } else {
-                echo "<p class=\"text-center w-100 fs-2 m-5\">ไม่พบข้อมูลที่ค้นหา</p>";
+                echo "<p class=\"text-center w-100 fs-4 m-5\">ไม่พบข้อมูลที่ค้นหา</p>";
             } ?>
 
             <?php
@@ -296,16 +340,16 @@ LIMIT :limit OFFSET :offset
     <!-- สิทธ์สมาชิก -->
     <div class="container text-center">
         <h1 class="text-start bigfront">สิทธิ์สมาชิก</h1>
-        <div class="row member" width="100px">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 member">
             <div class="col">
-                <img width="100%" src="https://a.storyblok.com/f/77562/960x920/df31ecb323/a-storyblok-2.png/m/" alt="MEMBER ICON" class="" />
+                <img width="100%" src="https://a.storyblok.com/f/77562/960x920/df31ecb323/a-storyblok-2.png/m/" alt="MEMBER ICON" class="img-fluid" />
 
             </div>
             <div class="col">
-                <img width="100%" src="https://a.storyblok.com/f/210486/960x920/924849b4d6/nintendo-switch.png/m/" alt="MEMBER ICON" class="" />
+                <img width="100%" src="https://a.storyblok.com/f/210486/960x920/924849b4d6/nintendo-switch.png/m/" alt="MEMBER ICON" class="img-fluid" />
             </div>
             <div class="col">
-                <img width="100%" src="https://a.storyblok.com/f/77562/960x920/1187706966/a-storyblok-1.png/m/" alt="MEMBER ICON" class="" />
+                <img width="100%" src="https://a.storyblok.com/f/77562/960x920/1187706966/a-storyblok-1.png/m/" alt="MEMBER ICON" class="img-fluid" />
             </div>
         </div>
     </div>
@@ -314,17 +358,17 @@ LIMIT :limit OFFSET :offset
     <!-- บัตรของขวัญ -->
     <div class="container mt-5 mb-4 text-center">
         <h1 class="text-start bigfront">บัตรของขวัญ</h1>
-        <div class="row row-cols-4 imggift font-2P fs-4">
-            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="" />
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 imggift font-2P fs-4">
+            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="img-fluid" />
                 <p class="position-absolute end-0 start-0 top-40 bottom-50">PLAYSTATION</p>
             </div>
-            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="" />
+            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="img-fluid" />
                 <p class="position-absolute end-0 start-0 top-40 bottom-50">XBOX</p>
             </div>
-            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="" />
+            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="img-fluid" />
                 <p class="position-absolute end-0 start-0 top-40 bottom-50">STEAM</p>
             </div>
-            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="" />
+            <div class="col position-relative"><img src="https://a.storyblok.com/f/210486/315x188/7ca7af17b2/playstation-gift-cards.png/m/" alt="GIFT ICON" class="img-fluid" />
                 <p class="position-absolute end-0 start-0 top-40 bottom-50">NINTENDO</p>
             </div>
         </div>

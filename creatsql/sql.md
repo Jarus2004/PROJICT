@@ -77,7 +77,7 @@ CREATE TABLE `order_items` (
   CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `games_table` (`id_games`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
 
-# INBOX KEYS
+# INBOX KEYSgit
 CREATE TABLE `inbox_keys` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) DEFAULT NULL,
