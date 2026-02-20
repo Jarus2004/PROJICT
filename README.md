@@ -5,6 +5,7 @@
 
 ## Contents
 - [Screenshots](#-screenshots)
+- [Demo Video](#-demo-video)
 - [Features](#features)
 - [Technologies](#technologies)
 - [Project Structure](#project-structure)
@@ -31,6 +32,10 @@
 <p align="center">
   <img src="screenshot/addmin-img.png" width="600">
 </p>
+
+## 🎬 Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://youtu.be/fBoqTYjbP7I)
 
 ## Features
 - สมัครสมาชิก / เข้าสู่ระบบ

@@ -55,4 +55,4 @@ if ($item) {
 }
 
 header("Location:../index.php");
-//exit;
+exit();

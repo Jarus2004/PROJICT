@@ -152,8 +152,8 @@ if (!isset($_SESSION['user_login'])) {
                 <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-inbox">
                     กล่องจดหมาย<i class="bi bi-backpack"></i>
                 </button>
-                <a href="../cart/cart_page.php" class="text-decoration-none fs-6 fs-md-4 fw-bold text-warning"><i class="bi bi-bag-fill"></i> ตะกร้าสินค้า </a>
-                <a href="../auth/logout.php" class="text-decoration-none fs-6 fs-md-4 fw-bold text-warning">ออกจากระบบ</a>
+                <a href="cart/cart_page.php" class="text-decoration-none fs-6 fs-md-4 fw-bold text-warning"><i class="bi bi-bag-fill"></i> ตะกร้าสินค้า </a>
+                <a href="auth/logout.php" class="text-decoration-none fs-6 fs-md-4 fw-bold text-warning">ออกจากระบบ</a>
             </div>
         </div>
     </div>
@@ -289,7 +289,7 @@ LIMIT :limit OFFSET :offset
                         <h5 class="text-center mb-3 text-warning fs-6 fs-md-5">จำนวนคีย์ที่มี : <?= $game['key_available'] ?></h5>
 
                         <!-- ฟอร์มเพิ่มลงตะกร้า -->
-                        <form action="../cart/add_to_cart.php" method="post" class="text-center mb-2">
+                        <form action="cart/add_to_cart.php" method="post" class="text-center mb-2">
                             <input type="hidden" name="product_id" value="<?= $game['id_games'] ?>">
                             <input type="hidden" name="price" value="<?= $game['price_games'] ?>">
                             <?php if ($game['key_available'] > 0) { ?>

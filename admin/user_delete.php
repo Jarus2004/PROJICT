@@ -7,6 +7,9 @@ if (!isset($_SESSION['admin_login'])) {
 }
 if (isset($_GET['delete_user'])) {
     $delete_id = (int)$_GET['delete_user'];
+    $stmt = $conn->prepare("DELETE FROM inbox_keys WHERE user_id = ?");
+    $stmt->execute([$delete_id]);
+
     $stmt = $conn->prepare("DELETE FROM bob WHERE id = ?");
     
     if ($stmt->execute([$delete_id])) {

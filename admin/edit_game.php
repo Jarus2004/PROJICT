@@ -76,8 +76,8 @@
                 <?php  
                     if(isset($_GET['id'])){
                         $id = $_GET['id'];
-                        $stmt = $conn-> query("SELECT * FROM games_table WHERE id_games = $id");
-                        $stmt->execute();
+                        $stmt = $conn->prepare("SELECT * FROM games_table WHERE id_games = ?");
+                        $stmt->execute([$id]);
                         $data = $stmt->fetch();
                     }
                 ?>
