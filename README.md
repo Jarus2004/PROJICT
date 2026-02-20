@@ -35,7 +35,7 @@
 
 ## 🎬 Demo Video
 
-[![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://youtu.be/fBoqTYjbP7I)
+[![Watch the demo](https://img.youtube.com/vi/fBoqTYjbP7I/maxresdefault.jpg)](https://youtu.be/fBoqTYjbP7I)
 
 ## Features
 - สมัครสมาชิก / เข้าสู่ระบบ
