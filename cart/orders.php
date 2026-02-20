@@ -171,13 +171,14 @@ WHERE c.user_id = :user_id
         $conn->commit();
 
         $_SESSION['success'] = "สั่งซื้อสำเร็จ!";
-        header("Location: ../pages/page.php");
+        header("Location: ../index.php");
         exit();
 
     } catch (Exception $e) {
 
         $conn->rollBack();
-        $_SESSION['error'] = $e->getMessage();
+        error_log("Order processing error: " . $e->getMessage());
+        $_SESSION['error'] = "เกิดข้อผิดพลาดในการสั่งซื้อ กรุณาลองใหม่อีกครั้ง";
         header("Location: cart_page.php");
         exit();
     }

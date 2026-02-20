@@ -69,7 +69,7 @@ if (isset($_GET['delete'])) {
 
     <div class="container bg-primary text-white text-center p-3 mt-5">
         <h1>Shopping Cart</h1>
-        <a href="../pages/page.php" class="text-dark text-decoration-none">กลับไปหน้าหลัก</a>
+        <a href="../index.php" class="text-dark text-decoration-none">กลับไปหน้าหลัก</a>
     </div>
         
     <div class="container mt-5">

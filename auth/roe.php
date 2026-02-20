@@ -21,7 +21,7 @@ if (isset($_POST['re'])){
                     $checkE->bindParam(':email', $email);
                     $checkE->execute();
                     $row = $checkE->fetch(PDO::FETCH_ASSOC);
-                    if($row['email'] == $email){
+                    if($row && $row['email'] == $email){
                         $_SESSION['error'] = "Email นี้ถูกใช้แล้ว";
                         header("Location: register.php");
 
@@ -42,7 +42,8 @@ if (isset($_POST['re'])){
                         header("Location: register.php");
                     }
                 }catch(PDOException $e){
-                    $_SESSION['error'] = "Database error: " . $e->getMessage();
+                    error_log("Registration error: " . $e->getMessage());
+                    $_SESSION['error'] = "เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง";
                     header("Location: register.php");
                 }
         }

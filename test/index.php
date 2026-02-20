@@ -1,5 +1,5 @@
 <?php  
-    require_once 'data.php';
+    require_once '../config/data.php';
     session_start(); 
     if(!isset($_SESSION['user_login'])){
         header("Location: login.php");
@@ -16,10 +16,11 @@
 </head>
 <body>
     <?php 
+        $row = null;
         if(isset($_SESSION['user_login'])) {
             $user_id = $_SESSION['user_login'];
-            $stmt = $conn->prepare("SELECT * FROM bob WHERE id = $user_id");
-            $stmt->execute();
+            $stmt = $conn->prepare("SELECT * FROM bob WHERE id = ?");
+            $stmt->execute([$user_id]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
         }
     ?>
@@ -27,7 +28,7 @@
     <a href="logout.php">Logout</a>
     <div id="A">
         <img src="https://img.icons8.com/ios-filled/50/000000/lock--v1.png" alt="Lock Icon"/>
-        <p>ปลอดภัย <?php echo $row['username']; ?></p>
+        <p>ปลอดภัย <?php echo isset($row['username']) ? $row['username'] : 'Guest'; ?></p>
         <p>100% ความปลอดภัย และ สนับสนุน 24ชั่วโมง</p>
     </div>
 

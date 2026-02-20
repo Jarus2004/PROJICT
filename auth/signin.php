@@ -29,7 +29,7 @@ if (isset($_POST['login'])) {
                                     header("Location: ../admin/admin_page.php");
                                 }else{
                                     $_SESSION['user_login'] = $row['id'];
-                                    header("Location: ../pages/page.php");
+                                    header("Location: ../index.php");
                                 }
                             }else{
                                 $_SESSION['error'] = "รหัสผ่านไม่ถูกต้อง";
@@ -44,7 +44,9 @@ if (isset($_POST['login'])) {
                         header("Location: login.php");
                     }
                 }catch(PDOException $e){
-                    echo $e->getMessage();
+                    error_log("Login error: " . $e->getMessage());
+                    $_SESSION['error'] = "เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง";
+                    header("Location: login.php");
                 }
         }
     }

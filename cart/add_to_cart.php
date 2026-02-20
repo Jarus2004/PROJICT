@@ -54,5 +54,5 @@ if ($item) {
     $stmt->execute([$cart_id, $product_id, $price]);
 }
 
-header("Location:../pages/page.php");
+header("Location:../index.php");
 //exit;

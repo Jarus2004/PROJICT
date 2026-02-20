@@ -139,7 +139,9 @@ VALUES (:order_id, :product_id, :qty, :price)
                 $conn->commit();
             } catch (Exception $e) {
                 $conn->rollBack();
-                echo $e->getMessage();
+                error_log("Order processing error: " . $e->getMessage());
+                $_SESSION['error'] = "เกิดข้อผิดพลาดในการสั่งซื้อ กรุณาลองใหม่อีกครั้ง";
+                header("Location: cart_page.php"); // หรือหน้าที่เหมาะสม
             }
 
             // ลบตะกร้าสินค้า

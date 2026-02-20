@@ -34,7 +34,8 @@ WHERE key_id IN (
         $_SESSION['success'] = "ลบ Order เรียบร้อยแล้ว";
     } catch (Exception $e) {
         $conn->rollBack();
-        $_SESSION['error'] = "เกิดข้อผิดพลาด: " . $e->getMessage();
+        error_log("Order delete error: " . $e->getMessage());
+        $_SESSION['error'] = "เกิดข้อผิดพลาดในการลบ Order กรุณาลองใหม่อีกครั้ง";
     }
 
     header("Location: admin_page.php?page=orders");

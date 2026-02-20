@@ -3,6 +3,7 @@
     session_start(); 
     if(!isset($_SESSION['admin_login'])){
         header("Location: ../auth/login.php");
+        exit();
     }
 
     if(isset($_POST['update'])){
@@ -18,7 +19,8 @@
                     $allowed = array('jpg', 'jpeg', 'png');
                     $extension = explode('.', $image["name"]);
                     $filesactext = strtolower(end($extension));
-                    $filenew = rand() . "." . $filesactext;
+                    // $filenew = rand() . "." . $filesactext;
+                    $filenew = bin2hex(random_bytes(16)) . "." . $filesactext;
                     $filePath = "../upload/" . $filenew;
 
                      if(in_array($filesactext, $allowed)){
